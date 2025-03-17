@@ -1,0 +1,131 @@
+.inquiry-article-header {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    padding-top: 100px; /* Navbar'ın yüksekliğine göre ayarlayın */
+    padding-bottom: 15px;
+}
+
+.inquiry-card {
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    padding: 20px;
+    width: 750px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.inquiry-labelinfo {
+    color: #71717a;
+    font-size: 15px;
+}
+
+.inquiry-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.inquiry-articlenumber-label {
+    margin-right: 15px;
+    font-weight: 550;
+    font-size: 15px;
+}
+
+.inquiry-email-label {
+    margin-right: 15px;
+    font-weight: 550;
+    font-size: 15px;
+}
+
+.inquiry-radio {
+    height: 18px;
+    width: 18px;
+    accent-color: #000000; 
+    cursor: pointer; 
+}
+.inquiry-article-input {
+    margin-top: -10px;
+}
+
+.inquiry-radio-span {
+    font-weight: 550;
+    font-size: 15px;
+    display: block;
+    margin-bottom: 5px; 
+}
+
+.inquiry-input-with-icon {
+    position: relative;
+    display: inline-block;
+    width: 80%;
+}
+
+.inquiry-input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+}
+
+.inquiry-input-with-icon input {
+    width: 100%;
+    padding: 8px 8px 8px 35px; /* Sol tarafta ikon için boşluk bırak */
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.inquiry-article-input button {
+    padding: 10px 15px;
+    background-color: #000000;
+    color: white;
+    font-size: 15px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.inquiry-article-input button:hover {
+    background-color: #2f2f31;
+}
+
+.inquiry-tablist {
+    width: 100%;
+    background-color: #f4f4f5;
+    border-radius: 5px;
+    padding: 6px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.inquiry-tablist-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.inquiry-tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-weight: 300;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.inquiry-tab.active {
+    background-color: #ffffff;
+}
+
+.inquiry-tab:hover {
+    background-color: #e4e4e7;
+}
+
+
