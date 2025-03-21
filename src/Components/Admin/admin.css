@@ -1,0 +1,89 @@
+.admin-article-header {
+    display: flex;
+    font-weight: bold;
+    padding-top: 95px; /* Navbar'ın yüksekliğine göre ayarlayın */
+    padding-bottom: 30px;
+    margin-left: 65px;
+    font-size: 14px;
+}
+
+.admin-card-header {
+    display: flex;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.admin-card {
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    padding: 25px;
+    width: 455px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.admin-card.empty-card {
+    border: none;
+}
+
+.admin-card-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.admin-card-title span {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.admin-article-icon {
+    width: 27px;
+    height: 27px;
+}
+
+.admin-reviewer-icon {
+    width: 23px;
+    height: 23px;
+}
+
+.admin-comment-icon {
+    width: 23px;
+    height: 22px;
+}
+
+.admin-inbox-icon {
+    width: 20px;
+    height: 22px;
+}
+
+.admin-log-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.admin-card-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.admin-card-content span {
+    font-size: 13px;
+    color: #71717a;
+    margin-bottom: 10px;
+}
+
+.admin-card-content button {
+    background-color: #181818;
+    color: #ffffff;
+    font-weight: 500;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.admin-card-content button:hover {
+    background-color: #2f2f31;
+}

@@ -3,9 +3,11 @@ import Navbar from '../Navbar/navbar';
 import './inquiry.css';
 import { useState } from 'react';
 import searchIcon from '../Assets/searchicon.png';
+import chatIcon from '../Assets/chaticon.png';
+import closeIcon from '../Assets/closeicon.png';
 
 // Tarihi formatla fonksiyonu ekleyin (bileşen dışında)
-const formatDate = (dateString) => {
+const formatDate = (dateString,tur) => {
   if (!dateString) return '';
   
   const date = new Date(dateString);
@@ -16,26 +18,91 @@ const formatDate = (dateString) => {
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
   const seconds = date.getSeconds().toString().padStart(2, '0');
-  
-  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+
+  if(tur==="makale")
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
+  else if(tur==="mesaj")
+    return `${hours}:${minutes}`;
+  else
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 };
 
 function Home() {
 
     const [inquiryType, setInquiryType] = useState('article');
     const [showResult, setShowResult] = useState(false);
+    const [showChatPanel, setShowChatPanel] = useState(false);
     const [trackingNumber, setTrackingNumber] = useState('');
     const [email, setEmail] = useState('');
     const [activeTab, setActiveTab] = useState('active');
     const [trackingNumberArticleData, setTrackingNumberArticleData] = useState(null);
     const [emailArticleData, setEmailArticleData] = useState([]);
+    const [sendMessages, setSendMessages] = useState([]);
+    const [senderEmail, setSenderEmail] = useState('');
+    const [messages, setMessages] = useState([]);
     
     const articleInputRef = useRef();
     const emailInputRef = useRef();
+    const messageInputRef = useRef();
+
+    const handleSendMessage = async (e) => {
+        e.preventDefault();
+        const messageValue = messageInputRef.current.value;
+        try {
+            const formData = new FormData();
+            formData.append('email', senderEmail);
+            formData.append('content', messageValue);
+
+            const response = await fetch('/messages/create', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                handleMessages();
+            }
+            if (!response.ok) {
+                alert("Mesaj gönderilemedi. Lütfen tekrar deneyin.");
+            }
+        }
+        catch (error) {
+            alert("Bağlantı hatası: " + error.message);
+        }
+        setSendMessages([...sendMessages, messageValue]);
+        messageInputRef.current.value = '';
+    }
+
+    const handleMessages = async () => {
+        fetchMessages(senderEmail);
+    }
 
     const handleInquiryType = (e) => {
         setInquiryType(e.target.value);
         setShowResult(false);
+    }
+
+    const handleChatPanel = () => {
+        setShowChatPanel(!showChatPanel);
+    }
+
+    const handleSetEmail = (e) => {
+        e.preventDefault();
+        const emailValue = emailInputRef.current.value;
+        setSenderEmail(emailValue);
+        fetchMessages(emailValue);
+        setShowChatPanel(true);
+    }
+
+    const fetchMessages = async (emailValue) => {
+        try {
+            const response = await fetch(`/messages/email/${emailValue}`);
+            if (response.ok) {
+                const data = await response.json();
+                setMessages(data);
+            }
+        }
+        catch (error) {
+            alert("Bağlantı hatası: " + error.message);
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -177,7 +244,7 @@ function Home() {
                                 {activeTab === 'active' && trackingNumberArticleData ? (
                                     <div className="inquiry-articleinfo-card">
                                         <div className="inquiry-articleinfo">
-                                            <span className="inquiry-articletitle">Makale Başlığı</span>
+                                            <span className="inquiry-articletitle">{trackingNumberArticleData.fileName}</span>
                                             <span className="inquiry-articlestatus">Değerlendirmede</span>
                                         </div>
                                         <span className="inquiry-info-label">Takip No: {trackingNumberArticleData.trackingNumber}</span>
@@ -186,7 +253,7 @@ function Home() {
                                                 <span className="inquiry-info-label">Gönderim Tarihi:</span>
                                                 <span className="inquiry-info-value">
                                                     {trackingNumberArticleData.submissionDate ? 
-                                                        formatDate(trackingNumberArticleData.submissionDate) : 
+                                                        formatDate(trackingNumberArticleData.submissionDate,"makale") : 
                                                         ''}
                                                 </span>
                                                 <span className="inquiry-info-label">Hakem Sayısı:</span>
@@ -196,7 +263,7 @@ function Home() {
                                                 <span className="inquiry-info-label">Son Güncelleme:</span>
                                                 <span className="inquiry-info-value">
                                                     {trackingNumberArticleData.reviewDate ? 
-                                                        formatDate(trackingNumberArticleData.reviewDate) : 
+                                                        formatDate(trackingNumberArticleData.reviewDate,"makale") : 
                                                         ''}
                                                 </span>
                                             </div>
@@ -216,7 +283,7 @@ function Home() {
                                     emailArticleData.map((emailArticle) => (
                                         <div className="inquiry-articleinfo-card" key={emailArticle.trackingNumber}>
                                             <div className="inquiry-articleinfo">
-                                                <span className="inquiry-articletitle">Makale Başlığı</span>
+                                                <span className="inquiry-articletitle">{emailArticle.fileName}</span>
                                                 <span className="inquiry-articlestatus">Değerlendirmede</span>
                                             </div>
                                             <span className="inquiry-info-label">Takip No: {emailArticle.trackingNumber}</span>
@@ -225,7 +292,7 @@ function Home() {
                                                     <span className="inquiry-info-label">Gönderim Tarihi:</span>
                                                     <span className="inquiry-info-value">
                                                         {emailArticle.submissionDate ? 
-                                                            formatDate(emailArticle.submissionDate) : 
+                                                            formatDate(emailArticle.submissionDate,"makale") : 
                                                             ''}
                                                     </span>
                                                     <span className="inquiry-info-label">Hakem Sayısı:</span>
@@ -235,7 +302,7 @@ function Home() {
                                                     <span className="inquiry-info-label">Son Güncelleme:</span>
                                                     <span className="inquiry-info-value">
                                                         {emailArticle.reviewDate ? 
-                                                            formatDate(emailArticle.reviewDate) : 
+                                                            formatDate(emailArticle.reviewDate,"makale") : 
                                                             ''}
                                                     </span>
                                                 </div>
@@ -250,6 +317,76 @@ function Home() {
                             </div>
                         )}
                     </div>
+            )}
+            <button className="inquiry-chat-icon-button" onClick={handleChatPanel}>
+                <img src={chatIcon} alt="chat" className="inquiry-chat-icon" />
+            </button>
+            {showChatPanel && senderEmail.length>0 && (
+                <div className="inquiry-chat-panel">
+                    <div className="inquiry-chat-header">
+                        <div className="inquiry-chat-title">
+                            <span>Admin Destek </span>
+                            <span className="inquiry-chat-status">Çevrimiçi</span>
+                        </div>
+                        <button className="inquiry-chatclose-button" onClick={handleChatPanel}>
+                            <img src={closeIcon} alt="chat" className="inquiry-chatclose-icon" />
+                        </button>
+                    </div>
+                    <div className="inquiry-chat-content">
+                        <div className="inquiry-chat-adminmessage">
+                            <span>Merhaba! Size nasıl yardımcı olabilirim?</span>
+                            <span className="inquiry-chat-clock">14.30</span>
+                        </div>
+                        
+                        {messages.map((message) => 
+                            message.senderEmail === senderEmail ? (
+                                <div className="inquiry-chat-authormessage" key={message.sentDate}>
+                                    <span>{message.content}</span>
+                                    <span className="inquiry-chat-authorclock">
+                                        {message.sentDate ? formatDate(message.sentDate,"mesaj") : ''}
+                                    </span>
+                                </div>
+                            ) : (
+                                <div className="inquiry-chat-adminmessage" key={message.sentDate}>
+                                    <span>{message.content}</span>
+                                    <span className="inquiry-chat-clock">
+                                        {message.sentDate ? formatDate(message.sentDate,"mesaj") : ''}
+                                    </span>
+                                </div>
+                            )
+                        )}
+                    </div>
+                    
+                    <form className="inquiry-chat-input" onSubmit={handleSendMessage}>
+                        <textarea 
+                            ref={messageInputRef}
+                            placeholder="Mesajınızı yazın..."
+                            required
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    handleSendMessage(e);
+                                }
+                            }}
+                        ></textarea>
+                        <button type="submit">
+                            <img src={chatIcon} alt="chat" className="inquiry-chat-messageicon" />
+                        </button>
+                    </form>
+                </div>
+            )}
+            {showChatPanel && senderEmail.length===0 && (
+                <form className="inquiry-chat-panel-email" onSubmit={handleSetEmail}>
+                    <span>E-posta adresinizi girerek destek alabilirsiniz.</span>
+                    <input 
+                        type='text' 
+                        placeholder='Örn: ornek@email.com' 
+                        ref={emailInputRef}
+                    />
+                    <button type="submit">
+                        İletişime Geç
+                    </button>
+                </form>
             )}
         </div>
     )
