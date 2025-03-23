@@ -77,7 +77,7 @@ function AdminArticleDetails() {
     const downloadPDF = async () => {
         try {
             // PDF dosyasını indirmek için endpoint'e istek gönder
-            const response = await fetch(`/articles/${articleTrackingNumber}/download`);
+            const response = await fetch(`/articles/download/${articleTrackingNumber}`);
             
             if (!response.ok) {
                 throw new Error('PDF indirme işlemi başarısız oldu');
@@ -110,15 +110,40 @@ function AdminArticleDetails() {
         }
     };
 
+    // Makale görüntüleme fonksiyonu
+    const viewArticle = async () => {
+        try {
+            // PDF dosyasını görüntülemek için endpoint'e istek gönder
+            const response = await fetch(`/articles/download/${articleTrackingNumber}`);
+            
+            if (!response.ok) {
+                throw new Error('PDF görüntüleme işlemi başarısız oldu');
+            }
+            
+            // Dosyayı blob olarak al
+            const blob = await response.blob();
+            
+            // Dosya için URL oluştur
+            const url = window.URL.createObjectURL(blob);
+            
+            // Yeni sekmede aç
+            window.open(url, '_blank');
+            
+        } catch (error) {
+            console.error('PDF görüntüleme hatası:', error);
+            alert('PDF görüntüleme sırasında bir hata oluştu.');
+        }
+    };
+
     return (
         <div>
             <div className="adminarticledetails-header">
                 <div className="adminarticledetails-article-header">
-                    <button>
-                        <a href="/admin/makaleler">
+                    <a href="/admin/makaleler">
+                        <button>
                             <img src={backIcon} alt="back" className="adminarticledetails-back-icon"/>
-                        </a>
-                    </button>
+                        </button>
+                    </a>
                     <span>Makaleler</span>
                 </div>
             </div>
@@ -220,10 +245,10 @@ function AdminArticleDetails() {
                     <div className="adminarticledetails-card2">
                         <span className="adminarticledetails-card-title">Hızlı İşlemler</span>
                         <div className="adminarticledetails-card2-content">
-                            <button>
+                            <button onClick={() => viewArticle()}>
                                 <span>Makaleyi Görüntüle</span>
                             </button>
-                            <button onClick={downloadPDF}>
+                            <button onClick={() => downloadPDF()}>
                                 <span>PDF İndir</span>
                             </button>
                             <button>

@@ -23,9 +23,11 @@ function Admin() {
                     </div>
                     <div className="admin-card-content">
                         <span>Sisteme yüklenen tüm makaleleri görüntüleyin ve yönetin.</span>
-                        <button className="admin-article-button">
-                            <a href="/admin/makaleler">Makaleleri Görüntüle</a>
-                        </button>   
+                        <a href="/admin/makaleler">
+                            <button className="admin-article-button">
+                                Makaleleri Görüntüle
+                            </button>   
+                        </a>
                     </div>
                 </div>
                 <div className="admin-card">
@@ -35,9 +37,11 @@ function Admin() {
                     </div>
                     <div className="admin-card-content">
                         <span>Hakem atamalarını yönetin ve hakem değişiklikleri yapın.</span>
-                        <button className="admin-article-button">
-                            <a href="/admin">Hakemleri Yönet</a>
-                        </button>   
+                        <a href="/admin/hakemler">
+                            <button className="admin-article-button">
+                                Hakemleri Yönet
+                            </button>   
+                        </a>
                     </div>
                 </div>
                 <div className="admin-card">
@@ -47,9 +51,11 @@ function Admin() {
                     </div>
                     <div className="admin-card-content">
                         <span>Yazarlardan gelen mesajları görüntüleyin ve yanıtlayın.</span>
-                        <button className="admin-article-button">
-                            <a href="/admin">Mesajları Görüntüle</a>
-                        </button>   
+                        <a href="/admin">
+                            <button className="admin-article-button">
+                                Mesajları Görüntüle
+                            </button>   
+                        </a>
                     </div>
                 </div>
             </div>
@@ -61,9 +67,11 @@ function Admin() {
                     </div>
                     <div className="admin-card-content">
                         <span>Değerlendirme sürecindeki makaleleri takip edin.</span>
-                        <button className="admin-article-button">
-                            <a href="/admin">Süreci Görüntüle</a>
-                        </button>   
+                        <a href="/admin">
+                            <button className="admin-article-button">
+                                Süreci Görüntüle
+                            </button>   
+                        </a>
                     </div>
                 </div>
                 <div className="admin-card">
@@ -73,9 +81,11 @@ function Admin() {
                     </div>
                     <div className="admin-card-content">
                         <span>Sistemdeki makale işlemlerinin log kayıtlarını inceleyin.</span>
-                        <button className="admin-article-button">
-                            <a href="/admin">Logları Görüntüle</a>
-                        </button>   
+                        <a href="/admin">
+                            <button className="admin-article-button">
+                                Logları Görüntüle
+                            </button>   
+                        </a>
                     </div>
                 </div>
                 <div className="admin-card empty-card">

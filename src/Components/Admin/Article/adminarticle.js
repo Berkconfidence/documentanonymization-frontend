@@ -46,6 +46,67 @@ function AdminArticle() {
         window.location.href = `http://localhost:3000/admin/makaleler/${articleTrackingNumber}`;
     };
 
+    const downloadPDF = async (article) => {
+        try {
+            // PDF dosyasını indirmek için endpoint'e istek gönder
+            const response = await fetch(`/articles/download/${article.trackingNumber}`);
+            
+            if (!response.ok) {
+                throw new Error('PDF indirme işlemi başarısız oldu');
+            }
+            
+            // Dosyayı blob olarak al
+            const blob = await response.blob();
+            
+            // Dosya için URL oluştur
+            const url = window.URL.createObjectURL(blob);
+            
+            // Geçici download link oluştur
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            
+            // Dosya adını ayarla
+            const fileName = article.fileName || `${article.trackingNumber}_makale.pdf`;
+            a.download = fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`;
+            
+            // Link'i DOM'a ekle, tıkla ve kaldır
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            
+        } catch (error) {
+            console.error('PDF indirme hatası:', error);
+            alert('PDF indirme sırasında bir hata oluştu.');
+        }
+    };
+
+     // Makale görüntüleme fonksiyonu
+     const viewArticle = async (article) => {
+        try {
+            // PDF dosyasını görüntülemek için endpoint'e istek gönder
+            const response = await fetch(`/articles/download/${article.trackingNumber}`);
+            
+            if (!response.ok) {
+                throw new Error('PDF görüntüleme işlemi başarısız oldu');
+            }
+            
+            // Dosyayı blob olarak al
+            const blob = await response.blob();
+            
+            // Dosya için URL oluştur
+            const url = window.URL.createObjectURL(blob);
+            
+            // Yeni sekmede aç
+            window.open(url, '_blank');
+            
+        } catch (error) {
+            console.error('PDF görüntüleme hatası:', error);
+            alert('PDF görüntüleme sırasında bir hata oluştu.');
+        }
+    };
+
     if(articleError) {
         return <div>{articleError}</div>;
     }    
@@ -54,11 +115,11 @@ function AdminArticle() {
         <div>
             <div className="adminarticle-header">
                 <div className="adminarticle-article-header">
-                    <button>
-                        <a href="/admin">
+                    <a href="/admin">
+                        <button>
                             <img src={backIcon} alt="back" className="adminarticle-back-icon"/>
-                        </a>
-                    </button>
+                        </button>   
+                    </a>
                     <span>Makaleler</span>
                 </div>
                 <div className="adminarticle-search-header">
@@ -88,20 +149,14 @@ function AdminArticle() {
                         <span>{article.submissionDate ? formatDate(article.submissionDate) : ''}</span>
                         <span>{article.status}</span>
                         <div className="adminarticle-actions">
-                            <button className="adminarticle-action-button">
-                                <a href="/admin">
-                                    <img src={viewIcon} alt="view" className="adminarticle-icon"/>
-                                </a>
+                            <button className="adminarticle-action-button" onClick={() => viewArticle(article)}>
+                                <img src={viewIcon} alt="view" className="adminarticle-icon"/>
+                            </button>
+                            <button className="adminarticle-action-button" onClick={() => downloadPDF(article)}>
+                                <img src={downloadIcon} alt="download" className="adminarticle-icon"/>
                             </button>
                             <button className="adminarticle-action-button">
-                                <a href="/admin">
-                                    <img src={downloadIcon} alt="download" className="adminarticle-icon"/>
-                                </a>
-                            </button>
-                            <button className="adminarticle-action-button">
-                                <a href="/admin">
-                                    <img src={sendArticleIcon} alt="sendarticle" className="adminarticle-icon"/>
-                                </a>
+                                <img src={sendArticleIcon} alt="sendarticle" className="adminarticle-icon"/>
                             </button>
                             <button className="adminarticle-action-button details" onClick={() => handleArticle(article.trackingNumber)}>
                                 Detaylar

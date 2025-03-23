@@ -5,6 +5,7 @@ import Inquiry from './Components/Inquiry/inquiry';
 import Admin from './Components/Admin/admin';
 import AdminMakale from './Components/Admin/Article/adminarticle';
 import AdminMakaleDetails from './Components/Admin/Article/[id]/adminarticledetails';
+import AdminHakem from './Components/Admin/Reviewer/adminreviewer';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
               <Route exact path='/admin' Component={Admin}></Route>
               <Route exact path='/admin/makaleler' Component={AdminMakale}></Route>
               <Route exact path='/admin/makaleler/:articleTrackingNumber' Component={AdminMakaleDetails}></Route>
+              <Route exact path='/admin/hakemler' Component={AdminHakem}></Route>
             </Routes>
        </BrowserRouter>
     </div>
