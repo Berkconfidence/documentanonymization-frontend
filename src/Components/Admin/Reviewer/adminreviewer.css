@@ -97,14 +97,15 @@
     overflow: auto;
 }
 
-.adminreviewer-card p1{
+.adminreviewer-card p1 {
     font-size: 24px;
     padding: 15px 20px;
+    display: block;
 }
 
 .adminreviewer-card-header, .adminreviewer-card-content {
     display: grid;
-    grid-template-columns: 100px 180px 300px 250px 170px 210px auto;
+    grid-template-columns: 100px 180px 250px 310px 170px 200px auto;
     align-items: center;
     padding: 15px 20px;
 }
@@ -145,7 +146,19 @@
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.adminreviewer-specialization-badge {
+    padding: 5px 8px;
+    border-radius: 8px;
+    background-color: black;
+    color: white;
+    font-size: 11px;
+    display: inline-block;
     white-space: nowrap;
+    margin: 2px;
 }
 
 .adminreviewer-icon {
@@ -373,6 +386,7 @@
     padding-top: 24px;
     padding-left: 8px;
 }
+
 
 
 

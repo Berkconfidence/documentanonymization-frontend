@@ -1,0 +1,215 @@
+.review-header {
+    padding-top: 70px; /* Navbar'ın yüksekliğine göre ayarlayın */
+}
+
+.review-header {
+    display: flex;
+    flex-direction: column;
+    padding-top: 95px; /* Navbar'ın yüksekliğine göre ayarlayın */
+    padding: 30px;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.review-header {
+    display: flex;
+    flex-direction: column;
+    padding-top: 95px; /* Navbar'ın yüksekliğine göre ayarlayın */
+    padding: 30px;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.review-title {
+    display: flex;
+    padding-bottom: 30px;
+}
+
+.review-title button{
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.review-back-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.review-title span{
+    font-size: 23px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+.review-card-header {
+    display: flex;
+}
+
+.review-article-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    width: 34%;
+    height: auto; 
+    min-height: 300px;
+    padding: 20px;
+    overflow: visible;
+    margin-right: 2%;
+}
+
+.review-article-card-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 18px;
+}
+
+.review-article-card-subtitle {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.review-article-card-content {
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.review-article-card-trackingnumber {
+    font-size: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #bdbdc1;
+    border-radius: 14px;
+    padding: 3px 8px;
+    width: fit-content;
+}
+
+.review-article-card-words {
+    display: flex;
+    font-size: 13px;
+    margin-bottom: 15px;
+    border: 1px solid #f6f6f7;
+    width: fit-content;
+    border-radius: 14px;
+    padding: 2px 8px;
+    background-color: #f6f6f7;
+}
+
+.review-article-card-status {
+    font-size: 13px;
+    margin-bottom: 10px;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    padding: 1px 10px;
+    width: fit-content;
+    background-color: black;
+    color: white;
+}
+
+.review-article-card button {
+    border: 1px solid #e4e4e7;
+    border-radius: 6px;
+    background-color: #ffffff;
+    width: 100%;
+    height: 40px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.review-article-card button:hover {
+    background-color: #f6f6f7;
+}
+
+.review-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    width: 70%;
+    height: auto; 
+    min-height: 300px;
+    padding: 20px;
+    overflow: visible;
+}
+
+.review-card-title {
+    font-size: 23px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.review-card-subtitle {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.review-chat-input {
+    gap: 8px;
+    padding-bottom: 10px;
+}
+
+.review-chat-input textarea {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    font-size: 15px;
+    resize: none;
+    overflow-y: auto;
+    min-height: 60px;
+    line-height: 20px; /* 2 satır için yaklaşık yükseklik */
+    font-family: inherit; /* Metni textarea içinde düzgün göstermek için */
+}
+
+.review-chat-input-container {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.review-chat-input-cancelbutton {
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.review-chat-input-cancelbutton:hover {
+    background-color: #f6f6f7;
+}
+
+.review-chat-input-sendbutton {
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    width: 180px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.review-chat-input-sendbutton:hover {
+    background-color: #2f2f31;
+}
+
+.review-chat-input-sendbutton.disabled {
+    background-color: #8b8b8d;
+    cursor: auto;
+}

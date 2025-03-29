@@ -1,0 +1,201 @@
+.adminlog-header {
+    display: flex;
+    flex-direction: column;
+    padding-top: 95px; /* Navbar'ın yüksekliğine göre ayarlayın */
+    padding: 30px;
+    margin-left: 35px;
+}
+
+.adminlog-title {
+    display: flex;
+    padding-bottom: 30px;
+}
+
+.adminlog-title button{
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.adminlog-back-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.adminlog-title span{
+    font-size: 23px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+.adminlog-search {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    width: 96.5%;
+    height: auto; 
+    min-height: 130px;
+    padding: 15px;
+    overflow: visible; /* hidden yerine visible kullanıyoruz */
+}
+
+.adminlog-search-container {
+    display: flex;
+    flex-wrap: wrap; /* ekran küçüldüğünde alt satıra geçmesi için */
+    gap: 10px; /* öğeler arasında boşluk */
+}
+
+.adminlog-search-header {
+    display: flex;
+    margin-bottom: 10px; /* alt öğeler için boşluk */
+}
+
+.adminlog-search-header img {
+    width: 18px;
+    height: 18px;
+    margin-top: 8px;
+}
+
+.adminlog-custom-dropdown {
+    position: relative;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.adminlog-dropdown-header {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+    border: 1px solid #e4e4e7;
+    border-radius: 8px;
+    height: 40px;
+    width: 300px;
+    padding: 10px;
+}
+
+.adminlog-dropdown-header span{
+    font-size: 14px;
+}
+
+.adminlog-dropdown-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.adminlog-dropdown-content {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    font-size: 14px;
+    max-height: 205px;
+    overflow-y: auto; 
+}
+
+.adminlog-dropdown-item {
+    padding: 10px 15px;
+}
+
+.adminlog-dropdown-item:hover {
+    background-color: #f4f4f5;
+}
+
+.adminlog-input {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border: 1px solid #e4e4e7;
+    border-radius: 8px;
+    height: 40px;
+    width: 300px;
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.adminlog-search-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #e4e4e7;
+    border-radius: 8px;
+    background-color: #000000;
+    width: 110px;
+    height: 50px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.adminlog-search-button img{
+    width: 18px;
+    height: 18px;
+}
+
+.adminlog-search-button span{
+    font-size: 14px;
+    color: #ffffff;
+    margin-left: 15px;
+}
+
+.adminlog-card {
+    border: 1px solid #e4e4e7;
+    flex-direction: column;
+    border-radius: 10px;
+    width: 96.5%;
+    height: auto;
+    overflow: auto;
+    margin-top: 25px;
+}
+
+.adminlog-card-header, .adminlog-card-content {
+    display: grid;
+    grid-template-columns: 100px 230px 320px 310px 200px 200px auto;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.adminlog-card-header {
+    border-bottom: 1px solid #e4e4e7;
+    padding-top: 12px;
+}
+
+.adminlog-card-header span {
+    color: #71717a;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.adminlog-card-content {
+    border-bottom: 1px solid #e4e4e7;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.adminlog-card-content:last-child {
+    border-bottom: none;
+}
+
+.adminlog-card-content span {
+    color: black;
+    font-size: 14px;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

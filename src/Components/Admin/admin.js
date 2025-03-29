@@ -51,7 +51,7 @@ function Admin() {
                     </div>
                     <div className="admin-card-content">
                         <span>Yazarlardan gelen mesajları görüntüleyin ve yanıtlayın.</span>
-                        <a href="/admin">
+                        <a href="/admin/mesajlar">
                             <button className="admin-article-button">
                                 Mesajları Görüntüle
                             </button>   
@@ -81,7 +81,7 @@ function Admin() {
                     </div>
                     <div className="admin-card-content">
                         <span>Sistemdeki makale işlemlerinin log kayıtlarını inceleyin.</span>
-                        <a href="/admin">
+                        <a href="/admin/loglar">
                             <button className="admin-article-button">
                                 Logları Görüntüle
                             </button>   

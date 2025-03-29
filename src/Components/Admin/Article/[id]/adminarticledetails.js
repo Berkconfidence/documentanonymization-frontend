@@ -23,12 +23,14 @@ const formatDate = (dateString) => {
 function AdminArticleDetails() {
     const { articleTrackingNumber } = useParams();
     const [selectedStatus, setSelectedStatus] = useState("Alındı");
-    const [selectedReviewer, setSelectedReviewer] = useState("Hakem Seç");
+    const [selectedReviewerBlank, setSelectedReviewerBlank] = useState("Hakem Seç");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isReviewerDropdownOpen, setIsReviewerDropdownOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('active');
     const [article, setArticle] = useState([]);
     const [articleError, setArticleError] = useState(null);
+    const [reviewers, setReviewers] = useState([]);
+    const [selectedReviewer, setSelectedReviewer] = useState(null);
 
     useEffect(() => {
         const fetchArticle = async () => {
@@ -37,15 +39,50 @@ function AdminArticleDetails() {
                 if (response.ok) {
                     const data = await response.json();
                     setArticle(data);
-                } else {
-                    setArticleError("Makale bilgileri alınamadı.");
                 }
             } catch (error) {
                 setArticleError("Bir hata oluştu. Lütfen tekrar deneyin.");
             }
         };
+        const fetchReviewer = async () => {
+            try {
+                const response = await fetch(`/reviewers/all`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setReviewers(data);
+                } 
+            } catch (error) {
+                setArticleError("Bir hata oluştu: " + error.message);
+            }
+        };
+        fetchReviewer();
         fetchArticle();
     }, [articleTrackingNumber]);
+
+    const assignReviewer = async () => {
+        if (!selectedReviewer) {
+            alert("Lütfen bir hakem seçin.");
+            return;
+        }
+        try {
+            const response = await fetch(`/articles/assignReviewer/${articleTrackingNumber}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedReviewer),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                alert("Hakem başarıyla atandı.");
+                setArticle(data);  
+            }
+
+        } catch (error) {
+            console.error('Hakem atama hatası:', error);
+            alert(`Hakem atama sırasında bir hata oluştu: ${error.message}`);
+        }
+    };
 
     if(articleError) {
         return <div>{articleError}</div>;
@@ -65,6 +102,7 @@ function AdminArticleDetails() {
     };
 
     const selectReviewer = (reviewer) => {
+        setSelectedReviewerBlank(reviewer.name);
         setSelectedReviewer(reviewer);
         setIsReviewerDropdownOpen(false);
     };
@@ -135,6 +173,64 @@ function AdminArticleDetails() {
         }
     };
 
+    // Makale görüntüleme fonksiyonu
+    const viewAnonimizeArticle = async () => {
+        try {
+            // PDF dosyasını görüntülemek için endpoint'e istek gönder
+            const response = await fetch(`/articles/view/${articleTrackingNumber}`);
+            
+            if (!response.ok) {
+                throw new Error('PDF görüntüleme işlemi başarısız oldu');
+            }
+            
+            // Dosyayı blob olarak al
+            const blob = await response.blob();
+            
+            // Dosya için URL oluştur
+            const url = window.URL.createObjectURL(blob);
+            
+            // Yeni sekmede aç
+            window.open(url, '_blank');
+            
+        } catch (error) {
+            console.error('PDF görüntüleme hatası:', error);
+            alert('PDF görüntüleme sırasında bir hata oluştu.');
+        }
+    };
+
+    // PDF anonimleştirme fonksiyonu
+    const anonimizePDF = async () => {
+        try {
+            // Öncelikle hata ayıklama için istek hakkında detaylı bilgi alalım
+            console.log("Anonimleştirme isteği gönderiliyor: " + articleTrackingNumber);
+            
+            const response = await fetch(`/articles/anonimize/${articleTrackingNumber}`, {
+                method: 'POST'
+            });
+
+            console.log("Yanıt durumu:", response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Hata detayı:", errorText);
+                throw new Error(`Anonimleştirme başarısız: ${response.status} ${errorText}`);
+            }
+
+            // Başarılı yanıt
+            alert("Makale başarıyla anonimleştirildi.");
+            
+            // Makale bilgilerini yeniden yükleyelim
+            const refreshResponse = await fetch(`/articles/tracking/${articleTrackingNumber}`);
+            if (refreshResponse.ok) {
+                const refreshedArticle = await refreshResponse.json();
+                setArticle(refreshedArticle);
+            }
+        } catch (error) {
+            console.error('PDF anonimleştirme hatası:', error);
+            alert(`Anonimleştirme sırasında bir hata oluştu: ${error.message}`);
+        }
+    }
+
     return (
         <div>
             <div className="adminarticledetails-header">
@@ -203,17 +299,18 @@ function AdminArticleDetails() {
                                         className="adminarticledetails-dropdown-header" 
                                         onClick={toggleDropdownReviewer}
                                     >
-                                        <span>{selectedReviewer}</span>
+                                        <span>{selectedReviewerBlank}</span>
                                         <i className="dropdown-icon">{isReviewerDropdownOpen ? '▼' : '▲'}</i>
                                     </div>
                                     {isReviewerDropdownOpen && (
                                         <div className="adminarticledetails-dropdown-content">
-                                            <div className="adminarticledetails-dropdown-item" onClick={() => selectReviewer("Berk Güven")}>Berk Güven</div>
-                                            <div className="adminarticledetails-dropdown-item" onClick={() => selectReviewer("Ege Polat")}>Ege Polat</div>
+                                            {reviewers.map((reviewer, index) => (
+                                                <div className="adminarticledetails-dropdown-item" key={index} onClick={() => selectReviewer(reviewer)}>{reviewer.name}</div>
+                                            ))}
                                         </div>
                                     )}
                                 </div>
-                                <button className="">
+                                <button onClick={() => assignReviewer()}>
                                     Hakem Ata
                                 </button>
                             </div>
@@ -251,11 +348,11 @@ function AdminArticleDetails() {
                             <button onClick={() => downloadPDF()}>
                                 <span>PDF İndir</span>
                             </button>
-                            <button>
+                            <button onClick={() => anonimizePDF()}>
                                 <span>Anonimleştir</span>
                             </button>
-                            <button>
-                                <span>Yazara Mesaj Gönder</span>
+                            <button onClick={() => viewAnonimizeArticle()}>
+                                <span>Anonimleşmiş Makaleyi Görüntüle</span>
                             </button>
                             <button>
                                 <span>Değerlendirme Sürecini Başlat</span>

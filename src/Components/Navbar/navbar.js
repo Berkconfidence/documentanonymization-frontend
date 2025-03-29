@@ -10,7 +10,7 @@ function Navbar() {
         <header className="navbar-header">
             <div>
                 <a href="/admin" className="navbar-admin">Admin</a>
-                <a href="/hakem" className="navbar-hakem">Hakem</a>
+                <a href="/reviewer" className="navbar-reviewer">Hakem</a>
             </div>
             <nav className="navbar">
                 <button className="navbar-button" onClick={() => window.location.href = '/home'}>
