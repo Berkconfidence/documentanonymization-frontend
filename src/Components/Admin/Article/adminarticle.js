@@ -32,8 +32,6 @@ function AdminArticle() {
                 if (response.ok) {
                     const data = await response.json();
                     setArticles(data);
-                } else {
-                    setArticleError("Kullanıcı bilgileri alınamadı.");
                 }
             } catch (error) {
                 setArticleError("Bir hata oluştu. Lütfen tekrar deneyin.");

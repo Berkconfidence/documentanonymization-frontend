@@ -290,8 +290,12 @@ function AdminArticleDetails() {
                     {activeTab === 'active' ? (
                         <div className="adminarticledetails-card4">
                             <p>Hakem Ataması</p>
-                            {/* article.reviewer ? */}
-                            <p1>Henüz hakem ataması yapılmamış</p1>
+                            {article.assignedReviewerName ? (
+                                <p1>Atanan Hakem: {article.assignedReviewerName}</p1>
+                            ) : (  
+                                <p1>Henüz hakem ataması yapılmamış</p1>      
+                            )}
+                            
                             <p2>Yeni Hakem Ata</p2>
                             <div className="adminarticledetails-card4-content">
                                 <div className="adminarticledetails-custom-dropdownreviewer">
@@ -355,7 +359,7 @@ function AdminArticleDetails() {
                                 <span>Anonimleşmiş Makaleyi Görüntüle</span>
                             </button>
                             <button>
-                                <span>Değerlendirme Sürecini Başlat</span>
+                                <span>Replace text in pdf</span>
                             </button>
                         </div>
                     </div>
