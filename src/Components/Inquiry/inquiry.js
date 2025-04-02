@@ -5,6 +5,7 @@ import { useState } from 'react';
 import searchIcon from '../Assets/searchicon.png';
 import chatIcon from '../Assets/chaticon.png';
 import closeIcon from '../Assets/closeicon.png';
+import viewIcon from '../Assets/viewicon.png';
 
 // Tarihi formatla fonksiyonu ekleyin (bileşen dışında)
 const formatDate = (dateString,tur) => {
@@ -150,6 +151,54 @@ function Home() {
         setActiveTab(tab);
     }
 
+    // Makale durumu değerlendirildi mi kontrolü
+    const isArticleEvaluated = (article) => {
+        return article.status === "Yazara İletildi";
+    }
+
+    // Aktif makaleleri filtreleme
+    const filterActiveArticles = (articles) => {
+        if (!articles) return null;
+        if (!Array.isArray(articles)) {
+            return !isArticleEvaluated(articles) ? articles : null;
+        }
+        return articles.filter(article => !isArticleEvaluated(article));
+    }
+
+    // Değerlendirilen makaleleri filtreleme
+    const filterEvaluatedArticles = (articles) => {
+        if (!articles) return null;
+        if (!Array.isArray(articles)) {
+            return isArticleEvaluated(articles) ? articles : null;
+        }
+        return articles.filter(article => isArticleEvaluated(article));
+    }
+
+     // Makale görüntüleme fonksiyonu
+     const viewReviewedArticle = async (article) => {
+        try {
+            // PDF dosyasını görüntülemek için endpoint'e istek gönder
+            const response = await fetch(`/articles/viewReviewed/${article.trackingNumber}`);
+            
+            if (!response.ok) {
+                throw new Error('PDF görüntüleme işlemi başarısız oldu');
+            }
+            
+            // Dosyayı blob olarak al
+            const blob = await response.blob();
+            
+            // Dosya için URL oluştur
+            const url = window.URL.createObjectURL(blob);
+            
+            // Yeni sekmede aç
+            window.open(url, '_blank');
+            
+        } catch (error) {
+            console.error('PDF görüntüleme hatası:', error);
+            alert('PDF görüntüleme sırasında bir hata oluştu.');
+        }
+    };
+
     return (
         <div>
             <Navbar />
@@ -241,11 +290,11 @@ function Home() {
                         
                         {inquiryType === 'article' && (
                             <div className="tab-content">
-                                {activeTab === 'active' && trackingNumberArticleData ? (
+                                {activeTab === 'active' && filterActiveArticles(trackingNumberArticleData) ? (
                                     <div className="inquiry-articleinfo-card">
                                         <div className="inquiry-articleinfo">
                                             <span className="inquiry-articletitle">{trackingNumberArticleData.fileName}</span>
-                                            <span className="inquiry-articlestatus">Değerlendirmede</span>
+                                            <span className="inquiry-articlestatus">{trackingNumberArticleData.status}</span>
                                         </div>
                                         <span className="inquiry-info-label">Takip No: {trackingNumberArticleData.trackingNumber}</span>
                                         <div className="inquiry-articleinfo2">
@@ -269,9 +318,40 @@ function Home() {
                                             </div>
                                         </div>
                                     </div>
+                                ) : activeTab === 'evaluated' && filterEvaluatedArticles(trackingNumberArticleData) ? (
+                                    <div className="inquiry-articleinfo-card">
+                                        <div className="inquiry-articleinfo">
+                                            <span className="inquiry-articletitle">{trackingNumberArticleData.fileName}</span>
+                                            <span className="inquiry-articlestatus">Değerlendirildi</span>
+                                        </div>
+                                        <span className="inquiry-info-label">Takip No: {trackingNumberArticleData.trackingNumber}</span>
+                                        <div className="inquiry-articleinfo2">
+                                            <div className="inquiry-info-column">
+                                                <span className="inquiry-info-label">Gönderim Tarihi:</span>
+                                                <span className="inquiry-info-value">
+                                                    {trackingNumberArticleData.submissionDate ? 
+                                                        formatDate(trackingNumberArticleData.submissionDate,"makale") : 
+                                                        ''}
+                                                </span>
+                                                <span className="inquiry-info-label">Hakem Sayısı:</span>
+                                                <span className="inquiry-info-value">1/1 Tamamlandı</span>
+                                            </div>
+                                            <div className="inquiry-info-column right">
+                                                <span className="inquiry-info-label">Son Güncelleme:</span>
+                                                <span className="inquiry-info-value">
+                                                    {trackingNumberArticleData.reviewDate ? 
+                                                        formatDate(trackingNumberArticleData.reviewDate,"makale") : 
+                                                        ''}
+                                                </span>
+                                            </div>
+                                            <button className="adminarticle-action-button" onClick={() => viewReviewedArticle(trackingNumberArticleData)}> 
+                                                <img src={viewIcon} alt="view" className="inquiry-info-icon"/> 
+                                            </button>
+                                        </div>
+                                    </div>
                                 ) : (
                                     <div className="inquiry-no-article">
-                                        <span>Bu takip numarasına ait değerlendirilen makale bulunamadı.</span>
+                                        <span>Bu takip numarasına ait {activeTab === 'active' ? 'aktif' : 'değerlendirilen'} makale bulunamadı.</span>
                                     </div>
                                 )}
                             </div>
@@ -279,40 +359,81 @@ function Home() {
 
                         {inquiryType === 'email' && (
                             <div className="tab-content">
-                                {activeTab === 'active' && emailArticleData && emailArticleData.length > 0 ? (
-                                    emailArticleData.map((emailArticle) => (
-                                        <div className="inquiry-articleinfo-card" key={emailArticle.trackingNumber}>
-                                            <div className="inquiry-articleinfo">
-                                                <span className="inquiry-articletitle">{emailArticle.fileName}</span>
-                                                <span className="inquiry-articlestatus">Değerlendirmede</span>
-                                            </div>
-                                            <span className="inquiry-info-label">Takip No: {emailArticle.trackingNumber}</span>
-                                            <div className="inquiry-articleinfo2">
-                                                <div className="inquiry-info-column">
-                                                    <span className="inquiry-info-label">Gönderim Tarihi:</span>
-                                                    <span className="inquiry-info-value">
-                                                        {emailArticle.submissionDate ? 
-                                                            formatDate(emailArticle.submissionDate,"makale") : 
-                                                            ''}
-                                                    </span>
-                                                    <span className="inquiry-info-label">Hakem Sayısı:</span>
-                                                    <span className="inquiry-info-value">0/1 Tamamlandı</span>
+                                {activeTab === 'active' ? (
+                                    filterActiveArticles(emailArticleData) && filterActiveArticles(emailArticleData).length > 0 ? (
+                                        filterActiveArticles(emailArticleData).map((emailArticle) => (
+                                            <div className="inquiry-articleinfo-card" key={emailArticle.trackingNumber}>
+                                                <div className="inquiry-articleinfo">
+                                                    <span className="inquiry-articletitle">{emailArticle.fileName}</span>
+                                                    <span className="inquiry-articlestatus">{emailArticle.status}</span>
                                                 </div>
-                                                <div className="inquiry-info-column right">
-                                                    <span className="inquiry-info-label">Son Güncelleme:</span>
-                                                    <span className="inquiry-info-value">
-                                                        {emailArticle.reviewDate ? 
-                                                            formatDate(emailArticle.reviewDate,"makale") : 
-                                                            ''}
-                                                    </span>
+                                                <span className="inquiry-info-label">Takip No: {emailArticle.trackingNumber}</span>
+                                                <div className="inquiry-articleinfo2">
+                                                    <div className="inquiry-info-column">
+                                                        <span className="inquiry-info-label">Gönderim Tarihi:</span>
+                                                        <span className="inquiry-info-value">
+                                                            {emailArticle.submissionDate ? 
+                                                                formatDate(emailArticle.submissionDate,"makale") : 
+                                                                ''}
+                                                        </span>
+                                                        <span className="inquiry-info-label">Hakem Sayısı:</span>
+                                                        <span className="inquiry-info-value">0/1 Tamamlandı</span>
+                                                    </div>
+                                                    <div className="inquiry-info-column right">
+                                                        <span className="inquiry-info-label">Son Güncelleme:</span>
+                                                        <span className="inquiry-info-value">
+                                                            {emailArticle.reviewDate ? 
+                                                                formatDate(emailArticle.reviewDate,"makale") : 
+                                                                ''}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        ))
+                                    ) : (
+                                        <div className="inquiry-no-article">
+                                            <span>Bu e-posta adresine ait aktif makale bulunamadı.</span>
                                         </div>
-                                    ))
+                                    )
                                 ) : (
-                                    <div className="inquiry-no-article">
-                                        <span>Bu e-posta adresine ait değerlendirilen makale bulunamadı.</span>
-                                    </div>
+                                    filterEvaluatedArticles(emailArticleData) && filterEvaluatedArticles(emailArticleData).length > 0 ? (
+                                        filterEvaluatedArticles(emailArticleData).map((emailArticle) => (
+                                            <div className="inquiry-articleinfo-card" key={emailArticle.trackingNumber}>
+                                                <div className="inquiry-articleinfo">
+                                                    <span className="inquiry-articletitle">{emailArticle.fileName}</span>
+                                                    <span className="inquiry-articlestatus">Değerlendirildi</span>
+                                                </div>
+                                                <span className="inquiry-info-label">Takip No: {emailArticle.trackingNumber}</span>
+                                                <div className="inquiry-articleinfo2">
+                                                    <div className="inquiry-info-column">
+                                                        <span className="inquiry-info-label">Gönderim Tarihi:</span>
+                                                        <span className="inquiry-info-value">
+                                                            {emailArticle.submissionDate ? 
+                                                                formatDate(emailArticle.submissionDate,"makale") : 
+                                                                ''}
+                                                        </span>
+                                                        <span className="inquiry-info-label">Hakem Sayısı:</span>
+                                                        <span className="inquiry-info-value">1/1 Tamamlandı</span>
+                                                    </div>
+                                                    <div className="inquiry-info-column right">
+                                                        <span className="inquiry-info-label">Son Güncelleme:</span>
+                                                        <span className="inquiry-info-value">
+                                                            {emailArticle.reviewDate ? 
+                                                                formatDate(emailArticle.reviewDate,"makale") : 
+                                                                ''}
+                                                        </span>
+                                                    </div>
+                                                    <button className="adminarticle-action-button" onClick={() => viewReviewedArticle(trackingNumberArticleData)}> 
+                                                        <img src={viewIcon} alt="view" className="inquiry-info-icon"/> 
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="inquiry-no-article">
+                                            <span>Bu e-posta adresine ait değerlendirilen makale bulunamadı.</span>
+                                        </div>
+                                    )
                                 )}
                             </div>
                         )}

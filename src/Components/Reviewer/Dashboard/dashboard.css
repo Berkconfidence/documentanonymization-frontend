@@ -181,3 +181,9 @@
     margin-top: 6px;
 }
 
+.dashboard-evaluated-button {
+    background-color: #4CAF50 !important; /* Yeşil arka plan */
+    color: white !important;
+    border: none !important;
+}
+

@@ -242,16 +242,26 @@ function AdminReviewer() {
                                         </div>
                                         {isDropdownOpen && (
                                             <div className="adminreviewer-dropdown-content">
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Derin öğrenme")}>Derin öğrenme</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Doğal dil işleme")}>Doğal dil işleme</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Beyin-bilgisayar arayüzleri")}>Beyin-bilgisayar arayüzleri</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Artırılmış ve sanal gerçeklik")}>Artırılmış ve sanal gerçeklik</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Veri madenciliği")}>Veri madenciliği</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Veri görselleştirme")}>Veri görselleştirme</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Şifreleme algoritmaları")}>Şifreleme algoritmaları</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Ağ güvenliği")}>Ağ güvenliği</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Bulut bilişim")}>Bulut bilişim</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Blockchain teknolojisi")}>Blockchain teknolojisi</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Deep Learning")}>Deep Learning</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Natural Language Processing")}>Natural Language Processing</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Computer Vision")}>Computer Vision</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Generative AI")}>Generative AI</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Brain-Computer Interfaces")}>Brain-Computer Interfaces</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("User Experience (UX) Design")}>User Experience (UX) Design</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Augmented and Virtual Reality")}>Augmented and Virtual Reality</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Data Mining")}>Data Mining</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Data Visualization")}>Data Visualization</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Data Processing Systems")}>Data Processing Systems</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Time Series Analysis")}>Time Series Analysis</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Encryption Algorithms")}>Encryption Algorithms</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Secure Software Development")}>Secure Software Development</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Network Security")}>Network Security</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Authentication Systems")}>Authentication Systems</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Digital Forensics")}>Digital Forensics</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("5G and Next-Generation Networks")}>5G and Next-Generation Networks</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Cloud Computing")}>Cloud Computing</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Blockchain Technology")}>Blockchain Technology</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Peer-to-Peer (P2P) and Decentralized Systems")}>Peer-to-Peer (P2P) and Decentralized Systems</div>
                                             </div>
                                         )}
                                         {selectedAreas && selectedAreas.length > 0 && (
@@ -357,16 +367,26 @@ function AdminReviewer() {
                                         </div>
                                         {isDropdownOpen && (
                                             <div className="adminreviewer-dropdown-content">
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Derin öğrenme")}>Derin öğrenme</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Doğal dil işleme")}>Doğal dil işleme</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Beyin-bilgisayar arayüzleri")}>Beyin-bilgisayar arayüzleri</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Artırılmış ve sanal gerçeklik")}>Artırılmış ve sanal gerçeklik</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Veri madenciliği")}>Veri madenciliği</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Veri görselleştirme")}>Veri görselleştirme</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Şifreleme algoritmaları")}>Şifreleme algoritmaları</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Ağ güvenliği")}>Ağ güvenliği</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Bulut bilişim")}>Bulut bilişim</div>
-                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Blockchain teknolojisi")}>Blockchain teknolojisi</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Deep Learning")}>Deep Learning</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Natural Language Processing")}>Natural Language Processing</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Computer Vision")}>Computer Vision</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Generative AI")}>Generative AI</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Brain-Computer Interfaces")}>Brain-Computer Interfaces</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("User Experience (UX) Design")}>User Experience (UX) Design</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Augmented and Virtual Reality")}>Augmented and Virtual Reality</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Data Mining")}>Data Mining</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Data Visualization")}>Data Visualization</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Data Processing Systems")}>Data Processing Systems</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Time Series Analysis")}>Time Series Analysis</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Encryption Algorithms")}>Encryption Algorithms</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Secure Software Development")}>Secure Software Development</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Network Security")}>Network Security</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Authentication Systems")}>Authentication Systems</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Digital Forensics")}>Digital Forensics</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("5G and Next-Generation Networks")}>5G and Next-Generation Networks</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Cloud Computing")}>Cloud Computing</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Blockchain Technology")}>Blockchain Technology</div>
+                                                <div className="adminreviewer-dropdown-item" onClick={() => selectArea("Peer-to-Peer (P2P) and Decentralized Systems")}>Peer-to-Peer (P2P) and Decentralized Systems</div>
                                             </div>
                                         )}
                                         {selectedAreas && selectedAreas.length > 0 && (

@@ -115,7 +115,12 @@ function Dashboard() {
                                     <span className="dashboard-card2-card-header-title3">Yüklendi: {article.submissionDate ? formatDate(article.submissionDate) : ''}</span>
                                 </div>
                             </div>
-                            <button onClick={()=>handleArticle(article.trackingNumber)} >Değerlendirme Yap</button>
+                            <button 
+                                onClick={()=>handleArticle(article.trackingNumber)}
+                                className={article.status === "Değerlendirildi" || article.status === "Yazara İletildi" ? "dashboard-evaluated-button" : ""}
+                            >
+                                {article.status === "Değerlendirildi" || article.status === "Yazara İletildi" ? "Değerlendirildi" : "Değerlendirme Yap"}
+                            </button>
                         </div>
                     </div>
                     ))}

@@ -56,9 +56,12 @@ function Review() {
     }, [articleTrackingNumber]);
 
     const handleReview = async (e) => {
+        e.preventDefault(); // Form submit varsayılan davranışını engelle
+        
         const formData = new FormData();
         formData.append("reviewText", reviewText);
-        formData.append("articleTrackingNumber", articleTrackingNumber);
+        formData.append("trackingNumber", articleTrackingNumber); // "articleTrackingNumber" yerine "trackingNumber"
+        
         try {
             const response = await fetch(`/articles/review/${articleTrackingNumber}`, {
                 method: "POST",
@@ -68,6 +71,7 @@ function Review() {
             if (response.ok) {
                 setReviewText("");
                 reviewInputRef.current.value = "";
+                alert("Değerlendirme başarıyla gönderildi");
             }
         }
         catch (error) {
@@ -135,7 +139,13 @@ function Review() {
                         <span className="review-article-card-subtitle">Makale Numarası</span>
                         <span className="review-article-card-trackingnumber">{article.trackingNumber}</span>
                         <span className="review-article-card-subtitle">Anahtar Kelimeler</span>
-                        <span className="review-article-card-words">Yapay Zeka</span>
+                        <p>
+                            {article.specializations.map((spec, idx) => (
+                                <label key={idx} className="adminreviewer-specialization-badge">
+                                    {spec}
+                                </label>
+                            ))}
+                        </p>
                         <span className="review-article-card-subtitle">Yüklenme Tarihi</span>
                         <span className="review-article-card-content">{article.submissionDate ? formatDate(article.submissionDate) : ''}</span>
                         <span className="review-article-card-subtitle">Durum</span>

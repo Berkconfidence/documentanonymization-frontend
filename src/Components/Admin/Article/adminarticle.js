@@ -23,7 +23,10 @@ const formatDate = (dateString) => {
 function AdminArticle() {
 
     const [articles, setArticles] = useState([]);
+    const [filteredArticles, setFilteredArticles] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [articleError, setArticleError] = useState(null);
+    const [selectedStatus, setSelectedStatus] = useState('Yazara İletildi');
 
     useEffect(() => {
         const fetchArticle = async () => {
@@ -32,6 +35,7 @@ function AdminArticle() {
                 if (response.ok) {
                     const data = await response.json();
                     setArticles(data);
+                    setFilteredArticles(data);
                 }
             } catch (error) {
                 setArticleError("Bir hata oluştu. Lütfen tekrar deneyin.");
@@ -39,6 +43,18 @@ function AdminArticle() {
         };
         fetchArticle();
     }, []);
+
+    useEffect(() => {
+        // Arama terimi değiştiğinde filtreleme yap
+        const results = articles.filter(article => 
+            article.fileName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredArticles(results);
+    }, [searchTerm, articles]);
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
 
     const handleArticle= (articleTrackingNumber) => {
         window.location.href = `http://localhost:3000/admin/makaleler/${articleTrackingNumber}`;
@@ -105,6 +121,26 @@ function AdminArticle() {
         }
     };
 
+    const changeStatus = async (article) => {
+        try {
+            const response = await fetch(`/articles/updateStatus/${article.trackingNumber}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: selectedStatus,
+            });
+            if (response.ok) {
+                alert("Makale durumu başarıyla güncellendi.");
+            } else {
+                const errorText = await response.text();
+                throw new Error(`Durum güncelleme başarısız: ${response.status} ${errorText}`);
+            }
+        } catch (error) {
+            alert(`Makale durumu güncelleme sırasında bir hata oluştu: ${error.message}`);
+        }
+    };
+
     if(articleError) {
         return <div>{articleError}</div>;
     }    
@@ -124,10 +160,9 @@ function AdminArticle() {
                     <input 
                         type="text" 
                         placeholder="Makale Ara..."
+                        value={searchTerm}
+                        onChange={handleSearch}
                     />
-                    <button>
-                        Ara
-                    </button>
                 </div>
             </div>
             <div className="adminarticle-card">
@@ -139,7 +174,7 @@ function AdminArticle() {
                     <span>Durum</span>
                     <span>İşlemler</span>
                 </div>
-                {articles.map((article, index) => (
+                {filteredArticles.map((article, index) => (
                     <div className="adminarticle-card-content" key={article.trackingNumber || index}>
                         <span>{article.trackingNumber}</span>
                         <span>{article.fileName}</span>
@@ -153,7 +188,10 @@ function AdminArticle() {
                             <button className="adminarticle-action-button" onClick={() => downloadPDF(article)}>
                                 <img src={downloadIcon} alt="download" className="adminarticle-icon"/>
                             </button>
-                            <button className="adminarticle-action-button">
+                            <button className="adminarticle-action-button" onClick={() => {
+                                setSelectedStatus("Yazara İletildi");
+                                changeStatus();
+                            }}>
                                 <img src={sendArticleIcon} alt="sendarticle" className="adminarticle-icon"/>
                             </button>
                             <button className="adminarticle-action-button details" onClick={() => handleArticle(article.trackingNumber)}>

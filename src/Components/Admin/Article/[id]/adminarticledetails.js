@@ -84,6 +84,30 @@ function AdminArticleDetails() {
         }
     };
 
+    const changeStatus = async () => {
+        try {
+            const response = await fetch(`/articles/updateStatus/${articleTrackingNumber}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: selectedStatus,
+            });
+            if (response.ok) {
+                const data = await response.json();
+                alert("Makale durumu başarıyla güncellendi.");
+                setArticle(data);
+            } else {
+                const errorText = await response.text();
+                console.error("Hata detayı:", errorText);
+                throw new Error(`Durum güncelleme başarısız: ${response.status} ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Makale durumu güncelleme hatası:', error);
+            alert(`Makale durumu güncelleme sırasında bir hata oluştu: ${error.message}`);
+        }
+    };
+
     if(articleError) {
         return <div>{articleError}</div>;
     }
@@ -198,6 +222,31 @@ function AdminArticleDetails() {
         }
     };
 
+    // Makale görüntüleme fonksiyonu
+    const viewReviewedArticle = async () => {
+        try {
+            // PDF dosyasını görüntülemek için endpoint'e istek gönder
+            const response = await fetch(`/articles/viewReviewed/${articleTrackingNumber}`);
+            
+            if (!response.ok) {
+                throw new Error('PDF görüntüleme işlemi başarısız oldu');
+            }
+            
+            // Dosyayı blob olarak al
+            const blob = await response.blob();
+            
+            // Dosya için URL oluştur
+            const url = window.URL.createObjectURL(blob);
+            
+            // Yeni sekmede aç
+            window.open(url, '_blank');
+            
+        } catch (error) {
+            console.error('PDF görüntüleme hatası:', error);
+            alert('PDF görüntüleme sırasında bir hata oluştu.');
+        }
+    };
+
     // PDF anonimleştirme fonksiyonu
     const anonimizePDF = async () => {
         try {
@@ -230,6 +279,41 @@ function AdminArticleDetails() {
             alert(`Anonimleştirme sırasında bir hata oluştu: ${error.message}`);
         }
     }
+
+    // Yazara iletme fonksiyonu
+    const sendToAuthor = async () => {
+        try {
+            console.log("Yazara iletme isteği gönderiliyor: " + articleTrackingNumber);
+            
+            const statusToSend = "Yazara İletildi";
+            
+            const response = await fetch(`/articles/updateStatus/${articleTrackingNumber}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain', 
+                },
+                body: statusToSend,
+            });
+            
+            console.log("Yanıt durumu:", response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Hata detayı:", errorText);
+                throw new Error(`Yazara iletme başarısız: ${response.status} ${errorText}`);
+            }
+
+            const data = await response.json();
+            alert("Makale yazara başarıyla iletildi.");
+            setArticle(data);
+            // Durum değişikliğini UI'da da yansıtalım
+            setSelectedStatus("Yazara İletildi");
+            
+        } catch (error) {
+            console.error('Yazara iletme hatası:', error);
+            alert(`Yazara iletme sırasında bir hata oluştu: ${error.message}`);
+        }
+    };
 
     return (
         <div>
@@ -265,7 +349,7 @@ function AdminArticleDetails() {
                                 <img src={downloadIcon} alt="back"/>
                                 <span>PDF İndir</span>
                             </button>
-                            <button className="adminarticledetails-card-button2">
+                            <button className="adminarticledetails-card-button2" onClick={() => anonimizePDF()}>
                                 <img src={sendArticleIcon} alt="back"/>
                                 <span>Anonimleştir ve Hakeme Gönder</span>
                             </button>
@@ -358,8 +442,11 @@ function AdminArticleDetails() {
                             <button onClick={() => viewAnonimizeArticle()}>
                                 <span>Anonimleşmiş Makaleyi Görüntüle</span>
                             </button>
-                            <button>
-                                <span>Replace text in pdf</span>
+                            <button onClick={() => viewReviewedArticle()}>
+                                <span>Değerlendirilmiş Makaleyi Görüntüle</span>
+                            </button>
+                            <button onClick={sendToAuthor}>
+                                <span>Makaleyi yazara ilet</span>
                             </button>
                         </div>
                     </div>
@@ -377,13 +464,13 @@ function AdminArticleDetails() {
                                 {isDropdownOpen && (
                                     <div className="adminarticledetails-dropdown-content">
                                         <div className="adminarticledetails-dropdown-item" onClick={() => selectStatus("Alındı")}>Alındı</div>
-                                        <div className="adminarticledetails-dropdown-item" onClick={() => selectStatus("Hakem Değerlendirmesinde")}>Hakem Değerlendirmesinde</div>
-                                        <div className="adminarticledetails-dropdown-item" onClick={() => selectStatus("Değerlendirme Tamamlandı")}>Değerlendirme Tamamlandı</div>
-                                        <div className="adminarticledetails-dropdown-item" onClick={() => selectStatus("Yazara iletildi")}>Yazara iletildi</div>
+                                        <div className="adminarticledetails-dropdown-item" onClick={() => selectStatus("Değerlendirmede")}>Değerlendirmede</div>
+                                        <div className="adminarticledetails-dropdown-item" onClick={() => selectStatus("Değerlendirildi")}>Değerlendirildi</div>
+                                        <div className="adminarticledetails-dropdown-item" onClick={() => selectStatus("Yazara İletildi")}>Yazara İletildi</div>
                                     </div>
                                 )}
                             </div>
-                            <button className="adminarticledetails-status-button">
+                            <button className="adminarticledetails-status-button" onClick={changeStatus}>
                                 Durumu Güncelle
                             </button>
                         </div>
